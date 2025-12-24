@@ -1,0 +1,21 @@
+name: Build JIvpn
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Dar permissão ao Gradle
+        run: chmod +x gradlew
+      - name: Compilar APK
+        run: ./gradlew assembleRelease
+      - name: Upload do APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: JIvpn-Final
+          path: app/build/outputs/apk/release/app-release.apk
