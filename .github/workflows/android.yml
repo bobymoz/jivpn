@@ -5,20 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK
+      
+      # MUDANÇA CRÍTICA: USANDO JAVA 8
+      - name: Setup JDK 8
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '8'
           distribution: 'temurin'
       
-      - name: 🛠️ REPARAR GRADLEW (Se faltar)
+      # GARANTIA DE QUE O GRADLEW EXISTE
+      - name: 🛠️ REPARAR GRADLEW
         run: |
           if [ ! -f gradlew ]; then
-            echo "⚠️ Arquivo gradlew sumiu! Gerando um novo..."
+            echo "Gerando gradlew novo..."
             gradle wrapper --gradle-version 5.4.1
           fi
           chmod +x gradlew
 
+      # LIMPEZA E BUILD (IGNORANDO ERROS DE LINT)
       - name: 🚀 Build APK
         run: ./gradlew assembleRelease -x lint -x test --stacktrace
       
