@@ -12,13 +12,17 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       
-      - name: 🛠️ REPARAR GRADLEW
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      
+      - name: 🛠️ FIX GRADLE & PROPERTIES
         run: |
           if [ ! -f gradlew ]; then
-            echo "Gerando gradlew novo..."
             gradle wrapper --gradle-version 5.4.1
           fi
           chmod +x gradlew
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "ndk.dir=" >> local.properties 
 
       - name: 🚀 Build APK
         run: ./gradlew assembleRelease -x lint -x test --stacktrace
