@@ -10,11 +10,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Dar permissão ao Gradle
+      - name: Fix Permissions
         run: chmod +x gradlew
-      - name: Compilar APK
+      - name: Build APK
         run: ./gradlew assembleRelease
-      - name: Upload do APK
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: JIvpn-Final
