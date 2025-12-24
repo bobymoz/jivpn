@@ -10,10 +10,18 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Fix Permissions
-        run: chmod +x gradlew
-      - name: Build APK
+      
+      - name: 🛠️ REPARAR GRADLEW (Se faltar)
+        run: |
+          if [ ! -f gradlew ]; then
+            echo "⚠️ Arquivo gradlew sumiu! Gerando um novo..."
+            gradle wrapper --gradle-version 5.4.1
+          fi
+          chmod +x gradlew
+
+      - name: 🚀 Build APK
         run: ./gradlew assembleRelease -x lint -x test --stacktrace
+      
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
