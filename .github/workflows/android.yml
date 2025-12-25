@@ -6,21 +6,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      # 1. PREPARA JAVA 8
       - name: Setup JDK 8
         uses: actions/setup-java@v4
         with:
           java-version: '8'
           distribution: 'temurin'
+
+      # 2. PREPARA AS FERRAMENTAS DO ANDROID (PARA O SDKMANAGER FUNCIONAR)
+      - name: Setup Android Tools
+        uses: android-actions/setup-android@v3
       
-      # INSTALAÇÃO MANUAL DAS FERRAMENTAS ANTIGAS
-      - name: 📦 Install Legacy SDK & NDK
+      # 3. INSTALA SDK 29 (COMANDO AGORA FUNCIONA) + NDK MANUAL
+      - name: 📦 Install Legacy Components
         run: |
-          echo "Baixando NDK r21e..."
+          echo "Aceitando licenças..."
+          yes | sdkmanager --licenses > /dev/null
+          
+          echo "Instalando Android 29..."
+          sdkmanager "platforms;android-29" "build-tools;29.0.3"
+          
+          echo "Baixando NDK r21e (Manual)..."
           wget -q https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
           unzip -q android-ndk-r21e-linux-x86_64.zip
-          
-          echo "Instalando Build-Tools 29.0.3 e Platform 29..."
-          yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-29" "build-tools;29.0.3"
           
           # Configura paths
           echo "ndk.dir=$PWD/android-ndk-r21e" > local.properties
