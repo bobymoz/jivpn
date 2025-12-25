@@ -6,33 +6,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # 1. PREPARA JAVA 8
-      - name: Setup JDK 8
+      # 1. ATIVA JAVA 17 (Só para instalar as ferramentas)
+      - name: Setup JDK 17 (For Tools)
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
 
-      # 2. PREPARA AS FERRAMENTAS DO ANDROID (PARA O SDKMANAGER FUNCIONAR)
-      - name: Setup Android Tools
-        uses: android-actions/setup-android@v3
-      
-      # 3. INSTALA SDK 29 (COMANDO AGORA FUNCIONA) + NDK MANUAL
-      - name: 📦 Install Legacy Components
+      # 2. INSTALA SDK 29 + NDK MANUAL (Usando Java 17)
+      - name: 📦 Install Android Components
         run: |
           echo "Aceitando licenças..."
           yes | sdkmanager --licenses > /dev/null
           
-          echo "Instalando Android 29..."
+          echo "Baixando SDK 29..."
           sdkmanager "platforms;android-29" "build-tools;29.0.3"
           
           echo "Baixando NDK r21e (Manual)..."
           wget -q https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
           unzip -q android-ndk-r21e-linux-x86_64.zip
           
-          # Configura paths
+          # Salva os caminhos
           echo "ndk.dir=$PWD/android-ndk-r21e" > local.properties
           echo "sdk.dir=$ANDROID_HOME" >> local.properties
+
+      # 3. TROCA PARA JAVA 8 (Para compilar o código antigo)
+      - name: Switch to JDK 8 (For Build)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
 
       - name: 🛠️ FIX GRADLE
         run: |
@@ -41,6 +44,7 @@ jobs:
           fi
           chmod +x gradlew
 
+      # 4. Compila (Agora estamos no Java 8, então vai funcionar)
       - name: 🚀 Build APK
         run: ./gradlew assembleRelease -x lint -x test --stacktrace
       
