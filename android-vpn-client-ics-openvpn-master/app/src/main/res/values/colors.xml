@@ -1,99 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Background, Status Bar, Menu Bar -->
-    <!--<color name="colorPrimary">#303030</color> #039be5-->
+    <color name="colorPrimary">#0056D2</color> <color name="colorLightPrimary">#408CFF</color> <color name="colorSecondary">#ECEFF1</color> <color name="colorBackground">#FFFFFF</color>
+    <color name="backgroundColor">#0056D2</color> <color name="colorLightBackground">#FFFFFF</color>
+    <color name="colorDarkBackground">#121212</color> <color name="colorText">#212121</color> <color name="colorTextPrimary">#212121</color>
+    <color name="colorDarkText">#FFFFFF</color>
+    <color name="colorLightText">#212121</color>
+    
+    <color name="textSup">#FFFFFF</color>
+    <color name="textSub">#B0BEC5</color>
+    <color name="textLink">#408CFF</color>
+    <color name="textHigh">#FFD600</color> <color name="colorBubble">#0056D2</color> <color name="colorSelectItem">#2979FF</color>
+    
+    <color name="colorConnecting">#00BFA5</color> 
+    <color name="colorConnectingLight">#64FFDA</color>
 
-    // background-color dark-blue #141526
-    // text-sup white #ffffff
-    // text-sub gray #9193a8
-    // text-link blue #1cbfff
-    // text-high yellow #fef294
+    <color name="colorDisconnect">#D50000</color>
+    <color name="colorDisconnectLight">#FF5252</color>
 
-    // icon-normal gray #9193a8
-    // icon-down blue #6afff3
-    // icon-up purple #bf71ff
-
-    // color blue #039be5
-    // color gray #f8fcfc
-    // colr white #ffffff
-
-    <color name="backgroundColor">#039be5</color>
-    <color name="textSup">#696969</color>
-    <color name="textSub">#696B7C</color>
-    <color name="textLink">#1cbfff</color>
-    <color name="textHigh">#fef294</color>
-    <color name="iconNormal">#9193a8</color>
-    <color name="iconDown">#6afff3</color>
-    <color name="iconUp">#bf71ff</color>
-
-
-    <color name="colorPrimary">#FF6600</color> //303030 0b0c1b 039be5
-    <color name="colorLightPrimary">#121212</color> //303030 0b0c1b 38C0F8
-    <color name="colorSecondary">#E9E9E9</color> //9193a8 CECECE
-    <color name="colorBackground">#ffffff</color>
-
-
-    <color name="colorSelectItem">#447FFF</color> //303030 0b0c1b 38C0F8
-    <color name="colorBubble">#3676FF</color> //303030 0b0c1b 38C0F8
-    <color name="colorConnecting">#3676FF</color> //303030 0b0c1b 38C0F8
-    <color name="colorConnectingLight">#4E86FF</color> //303030 0b0c1b 38C0F8
-    <color name="colorDisconnect">#FF2525</color> //303030 0b0c1b 039be5
-    <color name="colorDisconnectLight">#FF4040</color> //303030 0b0c1b 38C0F8
-
-    <color name="colorText">#000000</color>
-
-    <color name="colorStatsBlue">#4E86FF</color> //303030 0b0c1b 38C0F8
-    <color name="colorStatsGray">#818181</color> //303030 0b0c1b 38C0F8
-
+    <color name="colorStatsBlue">#2979FF</color>
+    <color name="colorStatsGray">#90A4AE</color>
     <color name="colorTextStats">#FFFFFF</color>
 
-    <color name="colorLightBackground">#FFFFFF</color>
-    <color name="colorDarkBackground">#303030</color>
+    <color name="iconNormal">#78909C</color>
+    <color name="iconDown">#00E676</color> <color name="iconUp">#FF9100</color>   <color name="colorDarkList">#37474F</color>
+    <color name="colorLightList">#F5F5F5</color>
 
-    <color name="colorDarkText">#FFFFFF</color>
-    <color name="colorLightText">#303030</color>
+    <color name="colorSample">#80D8FF</color>
+    <color name="colorSample2">#0091EA</color>
+    <color name="colorSampleGreen">#B9F6CA</color>
+    <color name="colorSampleGreen2">#00C853</color>
 
-    <color name="colorDarkList">#606060</color>
-    <color name="colorLightList">#dfdfdf</color>
+    <color name="colorRed">#FF1744</color>
+    <color name="colorGreen">#00C853</color>
+    <color name="colorYellow">#FFC400</color>
 
-    <color name="colorSample">#B0E4FC</color>
-    <color name="colorSample2">#005275</color>
-    <color name="colorSampleGreen">#CDFCB0</color>
-    <color name="colorSampleGreen2">#2D7500</color>
+    <color name="colorLightRed">#FF8A80</color>
+    <color name="colorLightGreen">#B9F6CA</color>
+    <color name="colorLightYellow">#FFE57F</color>
 
-    <color name="colorRed">#EE7673</color>
-    <color name="colorGreen">#0BA800</color>
-    <!-- <color name="colorBlue">#42A5F5</color> -->
-    <color name="colorYellow">#FFD25E</color>
-
-    <color name="colorLightRed">#F08B89</color>
-    <color name="colorLightGreen">#82C286</color>
-    <!-- <color name="colorLightBlue">#5FADEC</color> -->
-    <color name="colorLightYellow">#FDD688</color>
-
-    <color name="colorBlue">#002AA8</color>
-    <color name="colorBlueLight">#292A3A</color>
-    <color name="colorBlueDark">#009AAF</color>
+    <color name="colorBlue">#2962FF</color>
+    <color name="colorBlueLight">#82B1FF</color>
+    <color name="colorBlueDark">#0D47A1</color>
 
     <color name="colorWhite">#FFFFFF</color>
-
-
-
-    <color name="colorTextPrimary">#303030</color>
-
-
-    <!-- Button -->
-    <!--
-    <color name="colorPrimaryButton">#00FF88</color>
-    <color name="colorPrimaryButtonPressed">#566983</color>
-    -->
-
-    <!-- <color name="colorBlueA">#5372B9</color> -->
-
-    <!-- Gradient -->
-    <!--
-    <color name="colorA">#682BFB</color>
-    <color name="colorB">#962DFF</color>
-    <color name="colorC">#B52FF7</color>
-    -->
 </resources>
