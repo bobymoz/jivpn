@@ -10,6 +10,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.buzz.vpn"
         minSdkVersion 21
         targetSdkVersion 29
