@@ -6,21 +6,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # 1. ATIVA JAVA 17 (Só para instalar as ferramentas)
+      # 1. JAVA 17 (Para rodar o instalador)
       - name: Setup JDK 17 (For Tools)
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 2. INSTALA SDK 29 + NDK MANUAL (Usando Java 17)
+      # 2. SETUP DA AÇÃO (CRIA AS VARIÁVEIS DE AMBIENTE)
+      - name: Setup Android Action
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 11076708
+          log-accepted-android-sdk-licenses: true
+
+      # 3. INSTALA SDK 29 USANDO CAMINHO COMPLETO
       - name: 📦 Install Android Components
         run: |
+          # Procura onde o sdkmanager se escondeu
+          SDK_BIN="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          
+          if [ ! -f "$SDK_BIN" ]; then
+             echo "Tentando achar sdkmanager em outro lugar..."
+             SDK_BIN=$(find $ANDROID_HOME -name sdkmanager | head -n 1)
+          fi
+          
+          echo "Ferramenta encontrada em: $SDK_BIN"
+          
           echo "Aceitando licenças..."
-          yes | sdkmanager --licenses > /dev/null
+          yes | $SDK_BIN --licenses > /dev/null
           
           echo "Baixando SDK 29..."
-          sdkmanager "platforms;android-29" "build-tools;29.0.3"
+          $SDK_BIN "platforms;android-29" "build-tools;29.0.3"
           
           echo "Baixando NDK r21e (Manual)..."
           wget -q https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
@@ -30,7 +47,7 @@ jobs:
           echo "ndk.dir=$PWD/android-ndk-r21e" > local.properties
           echo "sdk.dir=$ANDROID_HOME" >> local.properties
 
-      # 3. TROCA PARA JAVA 8 (Para compilar o código antigo)
+      # 4. TROCA PARA JAVA 8 (Para compilar o código antigo)
       - name: Switch to JDK 8 (For Build)
         uses: actions/setup-java@v4
         with:
@@ -44,7 +61,7 @@ jobs:
           fi
           chmod +x gradlew
 
-      # 4. Compila (Agora estamos no Java 8, então vai funcionar)
+      # 5. Compila (Agora estamos no Java 8)
       - name: 🚀 Build APK
         run: ./gradlew assembleRelease -x lint -x test --stacktrace
       
