@@ -44,18 +44,15 @@ jobs:
           if [ ! -f gradlew ]; then gradle wrapper --gradle-version 5.4.1; fi
           chmod +x gradlew
 
-      - name: 🚀 Build APK
-        run: ./gradlew assembleRelease -x lint -x test --stacktrace --no-daemon
+      # MUDANÇA: USANDO ASSEMBLE DEBUG (EVITA CRASH E JÁ VEM ASSINADO)
+      - name: 🚀 Build APK (DEBUG)
+        run: ./gradlew assembleDebug -x lint -x test --stacktrace --no-daemon
         env:
           ANDROID_NDK_HOME: ${{ github.workspace }}/ndk-bundle
           ANDROID_NDK_ROOT: ${{ github.workspace }}/ndk-bundle
           JAVA_OPTS: "-Xmx2048m -XX:MaxMetaspaceSize=512m"
       
-      # DEPURAR: MOSTRAR ARQUIVOS GERADOS
-      - name: List Build Outputs
-        run: find app/build/outputs/apk -name "*.apk"
-
-      # MUDANÇA: PEGA QUALQUER APK QUE TIVER LÁ
+      # MUDANÇA: PROCURA EM TODA A PASTA BUILD
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
