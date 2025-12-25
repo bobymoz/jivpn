@@ -6,49 +6,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # 1. JAVA 17 (Para rodar o instalador)
-      - name: Setup JDK 17 (For Tools)
+      # 1. SETUP INICIAL
+      - name: Setup JDK 17 (Tools)
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 2. SETUP DA AÇÃO (CRIA AS VARIÁVEIS DE AMBIENTE)
       - name: Setup Android Action
         uses: android-actions/setup-android@v3
         with:
           cmdline-tools-version: 11076708
           log-accepted-android-sdk-licenses: true
 
-      # 3. INSTALA SDK 29 USANDO CAMINHO COMPLETO
-      - name: 📦 Install Android Components
+      # 2. INSTALAÇÃO DOS COMPONENTES
+      - name: 📦 Install Legacy Components
         run: |
-          # Procura onde o sdkmanager se escondeu
+          # Acha o sdkmanager
           SDK_BIN="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          
-          if [ ! -f "$SDK_BIN" ]; then
-             echo "Tentando achar sdkmanager em outro lugar..."
-             SDK_BIN=$(find $ANDROID_HOME -name sdkmanager | head -n 1)
-          fi
-          
-          echo "Ferramenta encontrada em: $SDK_BIN"
-          
-          echo "Aceitando licenças..."
-          yes | $SDK_BIN --licenses > /dev/null
+          if [ ! -f "$SDK_BIN" ]; then SDK_BIN=$(find $ANDROID_HOME -name sdkmanager | head -n 1); fi
           
           echo "Baixando SDK 29..."
-          $SDK_BIN "platforms;android-29" "build-tools;29.0.3"
+          yes | $SDK_BIN --licenses > /dev/null
+          $SDK_BIN "platforms;android-29" "build-tools;29.0.3" "cmake;3.10.2.4988404"
           
-          echo "Baixando NDK r21e (Manual)..."
+          echo "Baixando NDK r21e..."
           wget -q https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
           unzip -q android-ndk-r21e-linux-x86_64.zip
+          mv android-ndk-r21e ndk-bundle
           
-          # Salva os caminhos
-          echo "ndk.dir=$PWD/android-ndk-r21e" > local.properties
+          # Configura paths locais
+          echo "ndk.dir=$PWD/ndk-bundle" > local.properties
           echo "sdk.dir=$ANDROID_HOME" >> local.properties
 
-      # 4. TROCA PARA JAVA 8 (Para compilar o código antigo)
-      - name: Switch to JDK 8 (For Build)
+      # 3. TROCA PARA JAVA 8
+      - name: Switch to JDK 8
         uses: actions/setup-java@v4
         with:
           java-version: '8'
@@ -56,14 +48,16 @@ jobs:
 
       - name: 🛠️ FIX GRADLE
         run: |
-          if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version 5.4.1
-          fi
+          if [ ! -f gradlew ]; then gradle wrapper --gradle-version 5.4.1; fi
           chmod +x gradlew
 
-      # 5. Compila (Agora estamos no Java 8)
+      # 4. BUILD COM VARIÁVEIS DE AMBIENTE FORÇADAS
       - name: 🚀 Build APK
-        run: ./gradlew assembleRelease -x lint -x test --stacktrace
+        run: ./gradlew assembleRelease -x lint -x test --stacktrace --no-daemon
+        env:
+          ANDROID_NDK_HOME: ${{ github.workspace }}/ndk-bundle
+          ANDROID_NDK_ROOT: ${{ github.workspace }}/ndk-bundle
+          JAVA_OPTS: "-Xmx2048m -XX:MaxMetaspaceSize=512m"
       
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
