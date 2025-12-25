@@ -48,6 +48,7 @@ android.lintOptions {
     disable 'MissingTranslation'//, 'ManifestResource'
 }
 dependencies {
+    implementation "androidx.multidex:multidex:2.0.1"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'androidx.browser:browser:1.2.0'
