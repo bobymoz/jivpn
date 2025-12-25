@@ -20,20 +20,16 @@ jobs:
 
       - name: 📦 Install Legacy Components
         run: |
-          # Acha o sdkmanager
           SDK_BIN="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           if [ ! -f "$SDK_BIN" ]; then SDK_BIN=$(find $ANDROID_HOME -name sdkmanager | head -n 1); fi
           
-          echo "Baixando SDK 29..."
           yes | $SDK_BIN --licenses > /dev/null
           $SDK_BIN "platforms;android-29" "build-tools;29.0.3" "cmake;3.10.2.4988404"
           
-          echo "Baixando NDK r21e..."
           wget -q https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
           unzip -q android-ndk-r21e-linux-x86_64.zip
           mv android-ndk-r21e ndk-bundle
           
-          # Configura paths locais
           echo "ndk.dir=$PWD/ndk-bundle" > local.properties
           echo "sdk.dir=$ANDROID_HOME" >> local.properties
 
