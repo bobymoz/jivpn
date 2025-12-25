@@ -51,8 +51,13 @@ jobs:
           ANDROID_NDK_ROOT: ${{ github.workspace }}/ndk-bundle
           JAVA_OPTS: "-Xmx2048m -XX:MaxMetaspaceSize=512m"
       
+      # DEPURAR: MOSTRAR ARQUIVOS GERADOS
+      - name: List Build Outputs
+        run: find app/build/outputs/apk -name "*.apk"
+
+      # MUDANÇA: PEGA QUALQUER APK QUE TIVER LÁ
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: JIvpn-Final
-          path: app/build/outputs/apk/release/app-release.apk
+          path: app/build/outputs/apk/**/*.apk
